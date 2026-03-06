@@ -15,6 +15,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ./seed:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -22,7 +23,7 @@ services:
       retries: 5
 
   backend:
-    image: cmvghazi/ecommerce-backend:${BACKEND_VERSION:-latest}
+    image: yassine3232/ecommerce-backend:${BACKEND_VERSION:-latest}
     build:
       context: ./ecommerce-backend
       dockerfile: Dockerfile
@@ -47,7 +48,7 @@ services:
         condition: service_healthy
 
   frontend:
-    image: cmvghazi/ecommerce-frontend:${FRONTEND_VERSION:-latest}
+    image: yassine3232/ecommerce-frontend:${FRONTEND_VERSION:-latest}
     build:
       context: ./ecommerce-frontend
       dockerfile: Dockerfile
